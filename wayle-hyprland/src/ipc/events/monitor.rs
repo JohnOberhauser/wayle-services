@@ -31,25 +31,19 @@ pub(crate) fn handle_focused_mon_v2(
     hyprland_tx: Sender<HyprlandEvent>,
 ) -> Result<()> {
     let event_data = format!("{event}>>{data}");
-    let Some((name, workspace_id)) = data.split_once(',') else {
+    let Some((name, workspace_address)) = data.split_once(',') else {
         return Err(Error::EventParseError {
             event_data,
             field: "monitor_data",
-            expected: "comma-separated name,workspace_id",
+            expected: "comma-separated name,workspace_address",
             value: data.to_string(),
         });
     };
-    let workspace_id = workspace_id.parse().map_err(|_| Error::EventParseError {
-        event_data,
-        field: "workspace_id",
-        expected: "integer",
-        value: workspace_id.to_string(),
-    })?;
 
     let monitor_name = name.to_string();
     hyprland_tx.send(HyprlandEvent::FocusedMonV2 {
         name: monitor_name.clone(),
-        workspace_id,
+        workspace_address: workspace_address.to_string(),
     })?;
 
     Ok(())

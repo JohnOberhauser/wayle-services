@@ -117,25 +117,19 @@ pub(crate) fn handle_move_window_v2(
 ) -> Result<()> {
     let event_data = format!("{event}>>{data}");
     let parts: Vec<&str> = data.split(',').collect();
-    let [address, workspace_id, workspace] = parts.as_slice() else {
+    let [address, workspace_address, workspace] = parts.as_slice() else {
         return Err(Error::EventParseError {
             event_data,
             field: "window_data",
-            expected: "3 comma-separated values (address,workspace_id,workspace)",
+            expected: "3 comma-separated values (address,workspace_address,workspace)",
             value: data.to_string(),
         });
     };
-    let workspace_id = workspace_id.parse().map_err(|_| Error::EventParseError {
-        event_data,
-        field: "workspace_id",
-        expected: "integer",
-        value: (*workspace_id).to_string(),
-    })?;
 
     let address = Address::new((*address).to_string());
     hyprland_tx.send(HyprlandEvent::MoveWindowV2 {
         address: address.clone(),
-        workspace_id,
+        workspace_address: workspace_address.to_string(),
         workspace: (*workspace).to_string(),
     })?;
 

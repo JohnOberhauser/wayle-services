@@ -1,4 +1,4 @@
-use crate::{Address, MonitorId, ScreencastOwner, WorkspaceId};
+use crate::{Address, MonitorId, ScreencastOwner};
 
 /// Structured events emitted by Hyprland
 #[derive(Debug, Clone)]
@@ -17,8 +17,8 @@ pub enum HyprlandEvent {
     /// Is emitted ONLY when a user requests a workspace change, and is
     /// not emitted on mouse movements.
     WorkspaceV2 {
-        /// Workspace ID.
-        id: WorkspaceId,
+        /// Workspace address.
+        address: String,
         /// Workspace name.
         name: String,
     },
@@ -35,8 +35,8 @@ pub enum HyprlandEvent {
     FocusedMonV2 {
         /// Monitor name.
         name: String,
-        /// Active workspace ID on this monitor.
-        workspace_id: WorkspaceId,
+        /// Active workspace address on this monitor.
+        workspace_address: String,
     },
 
     /// Emitted when the active window is changed (v1).
@@ -99,8 +99,8 @@ pub enum HyprlandEvent {
 
     /// Emitted when a workspace is created (v2).
     CreateWorkspaceV2 {
-        /// Workspace ID.
-        id: WorkspaceId,
+        /// Workspace address.
+        address: String,
         /// Workspace name.
         name: String,
     },
@@ -113,8 +113,8 @@ pub enum HyprlandEvent {
 
     /// Emitted when a workspace is destroyed (v2).
     DestroyWorkspaceV2 {
-        /// Workspace ID.
-        id: WorkspaceId,
+        /// Workspace address.
+        address: String,
         /// Workspace name.
         name: String,
     },
@@ -129,8 +129,8 @@ pub enum HyprlandEvent {
 
     /// Emitted when a workspace is moved to a different monitor (v2).
     MoveWorkspaceV2 {
-        /// Workspace ID.
-        id: WorkspaceId,
+        /// Workspace address.
+        address: String,
         /// Workspace name.
         name: String,
         /// Target monitor name.
@@ -139,8 +139,8 @@ pub enum HyprlandEvent {
 
     /// Emitted when a workspace is renamed.
     RenameWorkspace {
-        /// Workspace ID.
-        id: WorkspaceId,
+        /// Workspace address.
+        address: String,
         /// New workspace name.
         new_name: String,
     },
@@ -159,8 +159,8 @@ pub enum HyprlandEvent {
     ///
     /// Closing results in empty workspace ID and name values.
     ActiveSpecialV2 {
-        /// Workspace ID.
-        id: WorkspaceId,
+        /// Workspace address.
+        address: String,
         /// Workspace name.
         workspace: String,
         /// Monitor name.
@@ -205,8 +205,8 @@ pub enum HyprlandEvent {
     MoveWindowV2 {
         /// Window address.
         address: Address,
-        /// Target workspace ID.
-        workspace_id: WorkspaceId,
+        /// Target workspace address.
+        workspace_address: String,
         /// Target workspace name.
         workspace: String,
     },

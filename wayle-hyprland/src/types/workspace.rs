@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::{Address, MonitorId, WorkspaceId, deserialize_optional_address};
+use crate::{Address, MonitorId, deserialize_optional_address};
 
 /// A workspace rule from Hyprland configuration.
 #[derive(Debug, Deserialize, Clone, PartialEq, Eq)]
@@ -16,7 +16,9 @@ pub struct WorkspaceRule {
 #[derive(Debug, Deserialize, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct WorkspaceData {
-    pub id: WorkspaceId,
+    pub address: String,
+    #[serde(rename = "type")]
+    pub kind: String,
     pub name: String,
     pub monitor: String,
     #[serde(rename = "monitorID")]

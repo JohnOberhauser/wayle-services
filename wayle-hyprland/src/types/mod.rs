@@ -20,8 +20,6 @@ use crate::Error;
 
 /// Unique identifier for a monitor.
 pub type MonitorId = i64;
-/// Unique identifier for a workspace.
-pub type WorkspaceId = i64;
 /// Process identifier.
 pub type ProcessId = i32;
 /// Focus history identifier.
@@ -60,8 +58,11 @@ impl TryFrom<&str> for ScreencastOwner {
 /// Workspace information for a monitor.
 #[derive(Debug, Deserialize, Clone, PartialEq, PartialOrd)]
 pub struct WorkspaceInfo {
-    /// Workspace ID.
-    pub id: WorkspaceId,
+    /// Workspace address.
+    pub address: String,
+    /// Workspace type (normal or special).
+    #[serde(rename = "type")]
+    pub kind: String,
     /// Workspace name.
     pub name: String,
 }
