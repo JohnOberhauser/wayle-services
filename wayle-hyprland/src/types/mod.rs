@@ -61,6 +61,7 @@ impl TryFrom<&str> for ScreencastOwner {
 #[derive(Debug, Deserialize, Clone, PartialEq, PartialOrd)]
 pub struct WorkspaceInfo {
     /// Workspace ID.
+    #[serde(default)]
     pub id: WorkspaceId,
     /// Workspace name.
     pub name: String,
