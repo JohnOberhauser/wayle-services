@@ -1,5 +1,6 @@
 use tokio::sync::broadcast::Sender;
 
+use super::workspace::resolve_event_workspace;
 use crate::{Address, Error, HyprlandEvent, Result};
 
 pub(crate) fn handle_active_window(
@@ -115,21 +116,22 @@ pub(crate) fn handle_move_window_v2(
     data: &str,
     hyprland_tx: Sender<HyprlandEvent>,
 ) -> Result<()> {
-    let event_data = format!("{event}>>{data}");
     let parts: Vec<&str> = data.split(',').collect();
-    let [address, workspace_address, workspace] = parts.as_slice() else {
+    let [address, workspace_field, workspace] = parts.as_slice() else {
         return Err(Error::EventParseError {
-            event_data,
+            event_data: format!("{event}>>{data}"),
             field: "window_data",
             expected: "3 comma-separated values (address,workspace_address,workspace)",
             value: data.to_string(),
         });
     };
 
-    let address = Address::new((*address).to_string());
+    let identity = resolve_event_workspace(event, data, workspace_field, workspace)?;
+
     hyprland_tx.send(HyprlandEvent::MoveWindowV2 {
-        address: address.clone(),
-        workspace_address: workspace_address.to_string(),
+        address: Address::new((*address).to_string()),
+        workspace_id: identity.id,
+        workspace_address: identity.address,
         workspace: (*workspace).to_string(),
     })?;
 

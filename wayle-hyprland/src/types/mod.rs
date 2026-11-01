@@ -1,5 +1,7 @@
 mod bind;
 mod client;
+#[cfg(test)]
+mod compat_tests;
 mod device;
 mod layer;
 mod monitor;
@@ -13,8 +15,8 @@ pub use device::*;
 pub use layer::*;
 pub use monitor::*;
 use serde::{Deserialize, Deserializer};
-pub(crate) use workspace::WorkspaceData;
-pub use workspace::WorkspaceRule;
+pub use workspace::{WorkspaceAddress, WorkspaceId, WorkspaceInfo, WorkspaceKind, WorkspaceRule};
+pub(crate) use workspace::{WorkspaceData, WorkspaceIdentity, deserialize_optional_workspace_info};
 
 use crate::Error;
 
@@ -53,18 +55,6 @@ impl TryFrom<&str> for ScreencastOwner {
             }),
         }
     }
-}
-
-/// Workspace information for a monitor.
-#[derive(Debug, Deserialize, Clone, PartialEq, PartialOrd)]
-pub struct WorkspaceInfo {
-    /// Workspace address.
-    pub address: String,
-    /// Workspace type (normal or special).
-    #[serde(rename = "type")]
-    pub kind: String,
-    /// Workspace name.
-    pub name: String,
 }
 
 /// Window address identifier.
